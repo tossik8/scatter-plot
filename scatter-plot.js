@@ -18,18 +18,15 @@ function createPlot(data){
 
 
     const xScale = d3.scaleLinear()
-                     .domain([d3.min(data, d => d["Year"]), d3.max(data, d => d["Year"])])
+                     .domain(d3.extent(data, d => d["Year"]))
                      .range([20, width]);
 
-    const yScale = d3.scalePoint()
-                     .domain(data.map(d => d["Time"]))
+    const yScale = d3.scaleLinear()
+                     .domain([d3.min(data, d => d["Seconds"]), d3.max(data, d => d["Seconds"])])
                      .range([0, 600]);
 
     const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
-    const yAxis = d3.axisLeft(yScale);
-
-
-    yAxis.tickValues(yScale.domain().filter((d, i) => i % 2 == 0));
+    const yAxis = d3.axisLeft(yScale).tickFormat(formatTick);
 
     svg.append("g")
        .call(xAxis);
@@ -37,5 +34,15 @@ function createPlot(data){
     svg.append("g")
        .attr("transform", "translate(40, 20)")
        .call(yAxis);
-
+}
+function formatTick(seconds){
+  let minutes = Math.floor(seconds/60);
+  let seconds2 = seconds%60;
+  if(seconds2 < 9 && seconds2 > 0){
+    seconds2 = "0" + seconds2;
+  }
+  else if(seconds2 === 0){
+    seconds2 += "0";
+  }
+  return minutes + ":" + seconds2;
 }
