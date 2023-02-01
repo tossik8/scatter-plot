@@ -10,7 +10,7 @@ function createPlot(data){
     console.log(data)
     const width = 920;
     const height = 630;
-    const margins = {top: 20, right: 20, bottom: 20, left: 40};
+    const margins = {top: 40, right: 70, bottom: 40, left: 70};
 
     const svg = d3.select(".panel")
       .append("svg")
@@ -24,18 +24,28 @@ function createPlot(data){
 
     const yScale = d3.scaleLinear()
                      .domain(d3.extent(data, d => d["Seconds"]))
-                     .range([0, height - margins.bottom]);
+                     .range([margins.top, height - margins.bottom]);
 
     const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
     const yAxis = d3.axisLeft(yScale).tickFormat(formatTick);
 
     svg.append("g")
+       .attr("id", "x-axis")
        .attr("transform", `translate(0, ${height - margins.bottom})`)
        .call(xAxis);
 
     svg.append("g")
+       .attr("id", "y-axis")
        .attr("transform", `translate(${margins.left}, 0)`)
        .call(yAxis);
+
+    svg.append("text")
+       .attr("x", margins.left)
+       .attr("y", height/3)
+       .style("transform-origin", margins.left/3 + "px " + height/3 + "px")
+       .style("transform", "rotate(-90deg)")
+       .attr("class", "y-label")
+       .text("Time in Minutes")
 }
 function formatTick(seconds){
   let minutes = Math.floor(seconds/60);

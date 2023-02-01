@@ -7,6 +7,9 @@ body{
     display: flex;
     justify-content: center;
 }
+.panel{
+    text-align: center;
+}
 
 svg{
 }
