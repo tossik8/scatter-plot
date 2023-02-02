@@ -2,15 +2,11 @@ import * as d3 from 'https://unpkg.com/d3?module';
 
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
     .then(response => response.json())
-    .then(data => {
-      createPlot(data);
-      createTooltip(data);
-    });
+    .then(data => createPlot(data));
 
 
 
 function createTooltip(data){
-  console.log(data)
   const circles = document.getElementsByClassName("dot");
   for(let i = 0; i < circles.length; ++i){
     circles[i].onmouseover = () => {
@@ -22,7 +18,7 @@ function createTooltip(data){
         document.getElementById("time").style.marginBottom = 5 + "px";
         document.getElementById("description").textContent = data[i]["Doping"];
       }
-      document.getElementById("tooltip").style.left = circles[i].cx.baseVal.value + 150 + "px";
+      document.getElementById("tooltip").style.left = circles[i].cx.baseVal.value + "px";
       document.getElementById("tooltip").style.top = circles[i].cy.baseVal.value + "px";
     }
     circles[i].onmouseleave = () => {
@@ -84,6 +80,36 @@ function createPlot(data){
        .attr("data-xvalue", d => d["Year"])
        .attr("data-yvalue", d => new Date(d["Year"] + "-12-31T23:" + d["Time"]));
 
+
+    const legend = svg.append("g")
+       .attr("id", "legend")
+       .attr("transform", `translate(${width - margins.left}, ${height/2})`);
+
+    legend.append("rect")
+       .attr("class", "no-doping")
+       .attr("width", 20)
+       .attr("height", 20);
+
+    legend.append("rect")
+          .attr("class", "doping")
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("y", 25);
+
+
+    legend.append("text")
+          .text("No doping allegations")
+          .attr("x", -110)
+          .attr("y", 15)
+          .attr("class", "legend-text");
+
+    legend.append("text")
+          .text("Riders with doping allegations")
+          .attr("x", -152)
+          .attr("y", 40)
+          .attr("class", "legend-text");
+
+    createTooltip(data);
 }
 function formatTick(seconds){
   let minutes = Math.floor(seconds/60);
