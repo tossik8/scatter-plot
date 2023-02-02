@@ -2,12 +2,38 @@ import * as d3 from 'https://unpkg.com/d3?module';
 
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
     .then(response => response.json())
-    .then(data => createPlot(data));
+    .then(data => {
+      createPlot(data);
+      createTooltip(data);
+    });
 
 
+
+function createTooltip(data){
+  console.log(data)
+  const circles = document.getElementsByClassName("dot");
+  for(let i = 0; i < circles.length; ++i){
+    circles[i].onmouseover = () => {
+      document.getElementById("tooltip").classList.remove("invisible");
+      document.getElementById("tooltip").classList.add("visible");
+      document.getElementById("contestant").textContent = data[i]["Name"] + ": " + data[i]["Nationality"];
+      document.getElementById("time").textContent = "Year: " + data[i]["Year"] + ", Time: " + data[i]["Time"];
+      if(data[i]["Doping"] !== ""){
+        document.getElementById("time").style.marginBottom = 5 + "px";
+        document.getElementById("description").textContent = data[i]["Doping"];
+      }
+      document.getElementById("tooltip").style.left = circles[i].cx.baseVal.value + 150 + "px";
+      document.getElementById("tooltip").style.top = circles[i].cy.baseVal.value + "px";
+    }
+    circles[i].onmouseleave = () => {
+      document.getElementById("tooltip").classList.remove("visible");
+      document.getElementById("tooltip").classList.add("invisible");
+      document.getElementById("description").textContent = "";
+      document.getElementById("time").style.marginBottom = 0 + "px";
+    }
+  }
+}
 function createPlot(data){
-
-    console.log(data)
     const width = 920;
     const height = 630;
     const margins = {top: 40, right: 70, bottom: 40, left: 70};
@@ -56,10 +82,8 @@ function createPlot(data){
        .attr("r", 7)
        .attr("class", d => d["URL"] === ""? "dot no-doping" : "dot doping")
        .attr("data-xvalue", d => d["Year"])
-       .attr("data-yvalue", d => setTime(d["Time"]));
+       .attr("data-yvalue", d => new Date(d["Year"] + "-12-31T23:" + d["Time"]));
 
-       console.log(data[0]["Seconds"]);
-       new Date().setMinutes()
 }
 function formatTick(seconds){
   let minutes = Math.floor(seconds/60);

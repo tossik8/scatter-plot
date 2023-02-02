@@ -1,6 +1,9 @@
 *{
     margin: 0;
 }
+svg{
+    position: relative;
+}
 
 body{
     min-height: 100vh;
@@ -9,6 +12,9 @@ body{
 }
 .panel{
     text-align: center;
+}
+.y-label{
+    font-size: 1.05rem;
 }
 
 .doping{
@@ -21,6 +27,18 @@ body{
 .dot{
     stroke: black;
 }
-
-svg{
+.invisible{
+    visibility: hidden;
+}
+.visible{
+    visibility: visible;
+}
+#tooltip{
+    position: absolute;
+    background-color: rgba(80,100,150,0.7);
+    border-radius: 0.5rem;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    z-index: 1;
 }
