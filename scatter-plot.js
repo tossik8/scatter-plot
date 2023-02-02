@@ -4,20 +4,38 @@ fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
     .then(response => response.json())
     .then(data => createPlot(data));
 
+window.onload = () => {
+  if(document.documentElement.clientWidth < 500){
+    document.body.style.zoom = "40%";
+  }
+  else if(document.documentElement.clientWidth < 800){
+    document.body.style.zoom = "60%";
+  }
+  else if(document.documentElement.clientWidth < 1000){
+    document.body.style.zoom = "80%";
+  }
+  else {
+    document.body.style.zoom = "100%";
+  }
+}
+
 
 
 function createTooltip(data){
   const circles = document.getElementsByClassName("dot");
   for(let i = 0; i < circles.length; ++i){
     circles[i].onmouseover = () => {
-      document.getElementById("tooltip").classList.remove("invisible");
-      document.getElementById("tooltip").classList.add("visible");
+      console.log(circles[i].cx.baseVal.value)
       document.getElementById("contestant").textContent = data[i]["Name"] + ": " + data[i]["Nationality"];
       document.getElementById("time").textContent = "Year: " + data[i]["Year"] + ", Time: " + data[i]["Time"];
       if(data[i]["Doping"] !== ""){
         document.getElementById("time").style.marginBottom = 5 + "px";
         document.getElementById("description").textContent = data[i]["Doping"];
       }
+
+      document.getElementById("tooltip").classList.remove("invisible");
+      document.getElementById("tooltip").classList.add("visible");
+
       document.getElementById("tooltip").style.left = circles[i].cx.baseVal.value + "px";
       document.getElementById("tooltip").style.top = circles[i].cy.baseVal.value + "px";
     }
