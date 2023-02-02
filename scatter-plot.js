@@ -45,7 +45,21 @@ function createPlot(data){
        .style("transform-origin", margins.left/3 + "px " + height/3 + "px")
        .style("transform", "rotate(-90deg)")
        .attr("class", "y-label")
-       .text("Time in Minutes")
+       .text("Time in Minutes");
+
+    svg.selectAll("cirlce")
+       .data(data)
+       .enter()
+       .append("circle")
+       .attr("cx", d => xScale(d["Year"]))
+       .attr("cy", d => yScale(d["Seconds"]))
+       .attr("r", 7)
+       .attr("class", d => d["URL"] === ""? "dot no-doping" : "dot doping")
+       .attr("data-xvalue", d => d["Year"])
+       .attr("data-yvalue", d => setTime(d["Time"]));
+
+       console.log(data[0]["Seconds"]);
+       new Date().setMinutes()
 }
 function formatTick(seconds){
   let minutes = Math.floor(seconds/60);
