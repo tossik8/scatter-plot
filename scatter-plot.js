@@ -1,4 +1,8 @@
 import * as d3 from 'https://unpkg.com/d3?module';
+const width = 920;
+const height = 570;
+let margins = {top: 40, right: 70, bottom: 40, left: 70};
+
 
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
     .then(response => response.json())
@@ -27,37 +31,35 @@ window.onresize = () => {
 }
 
 
-
 function createTooltip(data){
   const circles = document.getElementsByClassName("dot");
   for(let i = 0; i < circles.length; ++i){
-    circles[i].onmouseover = () => {
-      console.log(circles[i].attributes.getNamedItem("cx").value);
+    circles[i].addEventListener("mouseover", () =>  {
+      let rect= circles[i].getBoundingClientRect();
       document.getElementById("contestant").textContent = data[i]["Name"] + ": " + data[i]["Nationality"];
       document.getElementById("time").textContent = "Year: " + data[i]["Year"] + ", Time: " + data[i]["Time"];
+      document.getElementById("tooltip").setAttribute("data-year", data[i]["Year"]);
       if(data[i]["Doping"] !== ""){
         document.getElementById("time").style.marginBottom = 5 + "px";
         document.getElementById("description").textContent = data[i]["Doping"];
       }
-
       document.getElementById("tooltip").classList.remove("invisible");
       document.getElementById("tooltip").classList.add("visible");
-
-      document.getElementById("tooltip").style.left = circles[i].attributes.getNamedItem("cx").value + "px";
+      document.getElementById("tooltip").style.left = rect.left + 20 + "px";
       document.getElementById("tooltip").style.top = circles[i].attributes.getNamedItem("cy").value + "px";
-    }
-    circles[i].onmouseleave = () => {
+    });
+
+    circles[i].addEventListener("mouseleave", () => {
       document.getElementById("tooltip").classList.remove("visible");
       document.getElementById("tooltip").classList.add("invisible");
       document.getElementById("description").textContent = "";
       document.getElementById("time").style.marginBottom = 0 + "px";
-    }
+    });
+
   }
 }
 function createPlot(data){
-    const width = 920;
-    const height = 570;
-    const margins = {top: 40, right: 70, bottom: 40, left: 70};
+
 
     const svg = d3.select(".panel")
       .append("svg")
