@@ -33,7 +33,7 @@ body{
 }
 #tooltip{
     position: absolute;
-    background-color: rgba(80,100,150,0.7);
+    background-color: rgba(66, 177, 232, 0.9);
     border-radius: 0.5rem;
     text-align: left;
     padding: 0.5rem 1rem;
