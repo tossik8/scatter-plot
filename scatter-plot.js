@@ -46,7 +46,7 @@ function createTooltip(data){
       document.getElementById("tooltip").classList.remove("invisible");
       document.getElementById("tooltip").classList.add("visible");
       document.getElementById("tooltip").style.left = rect.left + 20 + "px";
-      document.getElementById("tooltip").style.top = circles[i].attributes.getNamedItem("cy").value + "px";
+      document.getElementById("tooltip").style.top = rect.top - 20 + "px";
     });
 
     circles[i].addEventListener("mouseleave", () => {
@@ -90,8 +90,8 @@ function createPlot(data){
 
     svg.append("text")
        .attr("x", margins.left)
-       .attr("y", height/3)
-       .style("transform-origin", margins.left/3 + "px " + height/3 + "px")
+       .attr("y", height/2.6)
+       .style("transform-origin", margins.left/3 + "px " + height/2.6 + "px")
        .style("transform", "rotate(-90deg)")
        .attr("class", "y-label")
        .text("Time in Minutes");
