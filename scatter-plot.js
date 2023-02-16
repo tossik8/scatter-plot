@@ -1,4 +1,3 @@
-import * as d3 from 'https://unpkg.com/d3?module';
 const width = 920;
 const height = 570;
 let margins = {top: 40, right: 70, bottom: 40, left: 70};
