@@ -99,6 +99,8 @@ function createPlot(data){
        .data(data)
        .enter()
        .append("circle")
+       .transition()
+       .duration(1000)
        .attr("cx", d => xScale(d["Year"]))
        .attr("cy", d => yScale(d["Seconds"]))
        .attr("r", 7)
