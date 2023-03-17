@@ -99,15 +99,14 @@ function createPlot(data){
        .data(data)
        .enter()
        .append("circle")
+       .attr("class", d => d["URL"] === ""? "dot no-doping" : "dot doping")
+       .attr("data-xvalue", d => d["Year"])
+       .attr("data-yvalue", d => new Date(d["Year"] + "-12-31T23:" + d["Time"]))
        .transition()
        .duration(1000)
        .attr("cx", d => xScale(d["Year"]))
        .attr("cy", d => yScale(d["Seconds"]))
-       .attr("r", 7)
-       .attr("class", d => d["URL"] === ""? "dot no-doping" : "dot doping")
-       .attr("data-xvalue", d => d["Year"])
-       .attr("data-yvalue", d => new Date(d["Year"] + "-12-31T23:" + d["Time"]));
-
+       .attr("r", 7);
 
     const legend = svg.append("g")
        .attr("id", "legend")
